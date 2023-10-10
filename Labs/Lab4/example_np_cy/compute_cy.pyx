@@ -19,7 +19,6 @@ def compute(array_1, array_2, int a, int b, int c):
     # good and thought out proposals for it).
     cdef Py_ssize_t x_max = array_1.shape[0]
     cdef Py_ssize_t y_max = array_1.shape[1]
-
     assert array_1.shape == array_2.shape
     assert array_1.dtype == DTYPE
     assert array_2.dtype == DTYPE
