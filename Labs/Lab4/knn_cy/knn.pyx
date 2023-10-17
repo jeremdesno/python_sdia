@@ -24,7 +24,7 @@ def knn_cython(cnp.ndarray[double, ndim=2] train_df,cnp.ndarray[double, ndim=2] 
         sorted_indices = np.argsort(distances)
         nearest_neighbors = sorted_indices[:n_neighbours]
 
-        neighbor_labels = train_df[nearest_neighbors, 0]  
+        neighbor_labels = train_df[nearest_neighbors, 1]  
         label = np.argmax(np.bincount(neighbor_labels.astype(int)))
 
         predictions[i] = label
