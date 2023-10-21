@@ -16,15 +16,25 @@ def knn_cython(cnp.ndarray[double, ndim=2] train_df,cnp.ndarray[double, ndim=2] 
     cdef int label
     predictions = np.zeros(num_samples_test, dtype = int)
 
+    # Create memoryviews for accessing the data
+    cdef double[:, :] train_data = train_df
+    cdef double[:, :] test_data = test_df
+    cdef double distance
+
+
     for i in range(num_samples_test):
         distances = np.empty(num_samples_train, dtype=np.double)
         for j in range(num_samples_train):
-            distances[j] = np.sum((train_df[j] - test_df[i]) ** 2)
+            distance = 0.0
+            for k in range(train_data.shape[1]):
+                if k != 1:
+                    distance += (train_data[j][k] - test_data[i][k]) ** 2
+            distances[j] = distance
 
         sorted_indices = np.argsort(distances)
         nearest_neighbors = sorted_indices[:n_neighbours]
 
-        neighbor_labels = train_df[nearest_neighbors, 0]  
+        neighbor_labels = train_df[nearest_neighbors, 1]  
         label = np.argmax(np.bincount(neighbor_labels.astype(int)))
 
         predictions[i] = label
